@@ -1,0 +1,286 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Create Account | ExamTrack</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            padding: 24px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: Arial, Helvetica, sans-serif;
+            color: #eaf0ff;
+            background: linear-gradient(135deg, #10172a, #182b4d, #111827);
+        }
+
+        .card {
+            width: 100%;
+            max-width: 440px;
+            padding: 34px;
+            background: rgba(19, 29, 51, 0.97);
+            border: 1px solid #334565;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .logo {
+            color: #7db4ff;
+            font-size: 18px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            text-align: center;
+        }
+
+        h1 {
+            margin: 18px 0 8px;
+            text-align: center;
+            font-size: 28px;
+        }
+
+        .intro {
+            margin: 0 0 26px;
+            color: #b8c5da;
+            text-align: center;
+            line-height: 1.6;
+        }
+
+        label {
+            display: block;
+            margin: 17px 0 8px;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        input {
+            width: 100%;
+            padding: 13px 14px;
+            color: #f5f7ff;
+            background: #0e1729;
+            border: 1px solid #40516e;
+            border-radius: 9px;
+            font-size: 15px;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: #76aaff;
+            box-shadow: 0 0 0 3px rgba(118, 170, 255, 0.14);
+        }
+
+        input::placeholder {
+            color: #8190a8;
+        }
+
+        .requirements {
+            margin: 10px 0 0;
+            padding-left: 20px;
+            color: #b8c5da;
+            font-size: 12px;
+            line-height: 1.8;
+        }
+
+        button {
+            width: 100%;
+            margin-top: 25px;
+            padding: 14px;
+            color: #fff;
+            background: #3478f6;
+            border: 0;
+            border-radius: 9px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #2563eb;
+        }
+
+        button:disabled {
+            opacity: 0.65;
+            cursor: wait;
+        }
+
+        .message {
+            display: none;
+            margin: 15px 0;
+            padding: 12px;
+            color: #ffd2d2;
+            background: #45232b;
+            border: 1px solid #82404b;
+            border-radius: 8px;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .message:not(:empty) {
+            display: block;
+        }
+
+        .links {
+            margin-top: 22px;
+            text-align: center;
+            color: #b8c5da;
+            font-size: 14px;
+            line-height: 2;
+        }
+
+        a {
+            color: #8ab7ff;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 480px) {
+            .card {
+                padding: 25px 20px;
+            }
+
+            h1 {
+                font-size: 25px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+<main class="card">
+    <div class="logo">ExamTrack</div>
+
+    <h1>Create your account</h1>
+    <p class="intro">
+        Register once and start practising aptitude and coding.
+        No email OTP verification required.
+    </p>
+
+    <div id="message" class="message" role="alert"
+         aria-live="polite"></div>
+
+    <form id="registrationForm" action="register" method="post">
+
+        <label for="fullName">Full name</label>
+        <input
+            id="fullName"
+            name="fullName"
+            type="text"
+            placeholder="Enter your full name"
+            autocomplete="name"
+            minlength="2"
+            maxlength="100"
+            pattern=".*\S.*"
+            required>
+
+        <label for="email">Email address</label>
+        <input
+            id="email"
+            name="email"
+            type="email"
+            placeholder="you@example.com"
+            autocomplete="email"
+            maxlength="150"
+            required>
+
+        <label for="mobile">Mobile number (optional)</label>
+        <input
+            id="mobile"
+            name="mobile"
+            type="tel"
+            placeholder="Enter mobile number"
+            autocomplete="tel"
+            maxlength="15"
+            pattern="[0-9+() -]{7,15}">
+
+        <label for="password">Password</label>
+        <input
+            id="password"
+            name="password"
+            type="password"
+            placeholder="Create a strong password"
+            autocomplete="new-password"
+            minlength="8"
+            maxlength="128"
+            required>
+
+        <ul class="requirements">
+            <li>8–128 characters</li>
+            <li>At least one uppercase and one lowercase letter</li>
+            <li>At least one number</li>
+            <li>At least one special character</li>
+        </ul>
+
+        <button id="submitButton" type="submit">
+            Create Account
+        </button>
+    </form>
+
+    <div class="links">
+        Already registered? <a href="login.html">Log in</a>
+        <br>
+        <a href="index.html">Back to home</a>
+    </div>
+</main>
+
+<script>
+    const messages = {
+        invalid: "Please check your name, email, mobile number and password.",
+        exists: "This email is already registered. Please log in.",
+        server: "Registration failed because of a server error. Please try again.",
+        database: "A database error occurred. Please try again."
+    };
+
+    const params = new URLSearchParams(window.location.search);
+    const message = document.getElementById("message");
+    const form = document.getElementById("registrationForm");
+    const password = document.getElementById("password");
+    const submitButton = document.getElementById("submitButton");
+
+    const error = params.get("error");
+    if (messages[error]) {
+        message.textContent = messages[error];
+    }
+
+    function validatePassword(value) {
+        return value.length >= 8
+            && value.length <= 128
+            && /[A-Z]/.test(value)
+            && /[a-z]/.test(value)
+            && /[0-9]/.test(value)
+            && /[^A-Za-z0-9]/.test(value);
+    }
+
+    form.addEventListener("submit", function(event) {
+        message.textContent = "";
+
+        if (!validatePassword(password.value)) {
+            event.preventDefault();
+            message.textContent =
+                "Use 8–128 characters with uppercase and lowercase letters, " +
+                "a number, and a special character.";
+            password.focus();
+            return;
+        }
+
+        submitButton.disabled = true;
+        submitButton.textContent = "Creating account...";
+    });
+
+    form.addEventListener("invalid", function() {
+        submitButton.disabled = false;
+        submitButton.textContent = "Create Account";
+    }, true);
+</script>
+</body>
+</html>

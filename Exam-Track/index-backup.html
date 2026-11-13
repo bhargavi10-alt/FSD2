@@ -1,0 +1,453 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>ExamTrack | Online Examination Platform</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f6f8ff;
+            color: #172033;
+        }
+
+        header {
+            width: 100%;
+            background: #ffffff;
+            border-bottom: 1px solid #e5e9f2;
+        }
+
+        nav {
+            max-width: 1200px;
+            margin: auto;
+            padding: 18px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .logo {
+            color: #315ee7;
+            font-size: 27px;
+            font-weight: 800;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 22px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #344054;
+            font-weight: 600;
+        }
+
+        .nav-links a:hover {
+            color: #315ee7;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 13px 22px;
+            border-radius: 9px;
+            text-decoration: none;
+            font-weight: 700;
+            text-align: center;
+            transition: 0.2s;
+            cursor: pointer;
+        }
+
+        .button-primary {
+            background: #315ee7;
+            color: white !important;
+        }
+
+        .button-primary:hover {
+            background: #244bc5;
+            transform: translateY(-1px);
+        }
+
+        .button-secondary {
+            background: white;
+            color: #315ee7;
+            border: 1px solid #315ee7;
+        }
+
+        .button-secondary:hover {
+            background: #eef2ff;
+        }
+
+        .hero {
+            max-width: 1200px;
+            margin: auto;
+            padding: 90px 24px 75px;
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            align-items: center;
+            gap: 50px;
+        }
+
+        .eyebrow {
+            display: inline-block;
+            padding: 9px 14px;
+            border-radius: 30px;
+            background: #e8edff;
+            color: #315ee7;
+            font-weight: 700;
+            font-size: 13px;
+            margin-bottom: 22px;
+        }
+
+        .hero h1 {
+            font-size: clamp(38px, 5vw, 62px);
+            line-height: 1.12;
+            letter-spacing: -1.5px;
+            margin-bottom: 22px;
+        }
+
+        .hero h1 span {
+            color: #315ee7;
+        }
+
+        .hero p {
+            max-width: 580px;
+            color: #667085;
+            font-size: 18px;
+            line-height: 1.8;
+            margin-bottom: 30px;
+        }
+
+        .hero-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+        }
+
+        .hero-card {
+            background: linear-gradient(145deg, #315ee7, #6549d8);
+            color: white;
+            padding: 34px;
+            border-radius: 24px;
+            box-shadow: 0 22px 50px #315ee733;
+        }
+
+        .hero-card .icon {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        .hero-card h2 {
+            font-size: 27px;
+            margin-bottom: 12px;
+        }
+
+        .hero-card p {
+            color: #eef1ff;
+            font-size: 15px;
+            line-height: 1.8;
+            margin-bottom: 25px;
+        }
+
+        .feature-list {
+            display: grid;
+            gap: 14px;
+        }
+
+        .feature {
+            padding: 15px;
+            background: #ffffff1a;
+            border: 1px solid #ffffff30;
+            border-radius: 12px;
+            font-size: 15px;
+        }
+
+        .section {
+            max-width: 1200px;
+            margin: auto;
+            padding: 55px 24px 75px;
+        }
+
+        .section-heading {
+            text-align: center;
+            margin-bottom: 38px;
+        }
+
+        .section-heading h2 {
+            font-size: 34px;
+            margin-bottom: 12px;
+        }
+
+        .section-heading p {
+            color: #667085;
+            line-height: 1.7;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 22px;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 28px;
+            border: 1px solid #e6eaf2;
+            border-radius: 16px;
+            box-shadow: 0 5px 20px #17203308;
+        }
+
+        .feature-card .feature-icon {
+            font-size: 31px;
+            margin-bottom: 17px;
+        }
+
+        .feature-card h3 {
+            font-size: 20px;
+            margin-bottom: 12px;
+        }
+
+        .feature-card p {
+            color: #667085;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        .cta {
+            margin: 10px 24px 70px;
+            padding: 48px 24px;
+            border-radius: 20px;
+            text-align: center;
+            background: #e9eeff;
+        }
+
+        .cta h2 {
+            font-size: 30px;
+            margin-bottom: 15px;
+        }
+
+        .cta p {
+            color: #667085;
+            margin-bottom: 25px;
+            line-height: 1.7;
+        }
+
+        footer {
+            background: #172033;
+            color: #d0d5dd;
+            padding: 25px 20px;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        @media (max-width: 800px) {
+            .hero {
+                grid-template-columns: 1fr;
+                padding-top: 55px;
+                gap: 35px;
+            }
+
+            .features {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-links {
+                gap: 12px;
+            }
+
+            .nav-links a {
+                font-size: 14px;
+            }
+
+            .nav-links .button {
+                padding: 10px 12px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            nav {
+                padding: 16px;
+                flex-wrap: wrap;
+            }
+
+            .logo {
+                font-size: 23px;
+            }
+
+            .hero {
+                padding: 45px 18px;
+            }
+
+            .hero h1 {
+                font-size: 39px;
+            }
+
+            .hero p {
+                font-size: 16px;
+            }
+
+            .hero-buttons .button {
+                width: 100%;
+            }
+
+            .section {
+                padding: 35px 18px 50px;
+            }
+
+            .section-heading h2 {
+                font-size: 28px;
+            }
+
+            .hero-card {
+                padding: 25px;
+            }
+
+            .cta {
+                margin: 0 18px 45px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <nav>
+        <a class="logo" href="index.html">ExamTrack</a>
+
+        <div class="nav-links">
+            <a href="#features">Features</a>
+            <a href="login.html">Login</a>
+            <a class="button button-primary" href="register.html">
+                Create Account
+            </a>
+        </div>
+    </nav>
+</header>
+
+<main>
+
+    <section class="hero">
+        <div>
+            <span class="eyebrow">YOUR EXAM. YOUR PROGRESS.</span>
+
+            <h1>
+                Prepare smarter.<br>
+                Perform <span>better.</span>
+            </h1>
+
+            <p>
+                Welcome to ExamTrack, your online platform for aptitude
+                practice, coding challenges, regular assessments, and
+                tracking your learning progress.
+            </p>
+
+            <div class="hero-buttons">
+                <a class="button button-primary" href="register.html">
+                    Get Started
+                </a>
+
+                <a class="button button-secondary" href="login.html">
+                    Student Login
+                </a>
+            </div>
+        </div>
+
+        <div class="hero-card">
+            <div class="icon">🎯</div>
+
+            <h2>Your learning journey starts here</h2>
+
+            <p>
+                Practice consistently, challenge your coding skills,
+                and monitor your performance in one place.
+            </p>
+
+            <div class="feature-list">
+                <div class="feature">✓ Aptitude practice tests</div>
+                <div class="feature">✓ Coding challenges</div>
+                <div class="feature">✓ Performance tracking</div>
+                <div class="feature">✓ Email OTP authentication</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" id="features">
+        <div class="section-heading">
+            <h2>Everything you need to improve</h2>
+            <p>
+                Build your skills with structured practice and assessments.
+            </p>
+        </div>
+
+        <div class="features">
+            <article class="feature-card">
+                <div class="feature-icon">🧠</div>
+                <h3>Aptitude Practice</h3>
+                <p>
+                    Improve your logical reasoning, quantitative aptitude,
+                    and problem-solving skills through practice.
+                </p>
+            </article>
+
+            <article class="feature-card">
+                <div class="feature-icon">💻</div>
+                <h3>Coding Challenges</h3>
+                <p>
+                    Develop programming skills and solve coding problems
+                    to strengthen your technical knowledge.
+                </p>
+            </article>
+
+            <article class="feature-card">
+                <div class="feature-icon">📊</div>
+                <h3>Track Your Progress</h3>
+                <p>
+                    Use your assessment results to understand your progress
+                    and identify areas that need more practice.
+                </p>
+            </article>
+        </div>
+    </section>
+
+    <section class="cta">
+        <h2>Ready to begin?</h2>
+        <p>
+            Create your account using your email address and verify it
+            with a one-time password.
+        </p>
+
+        <a class="button button-primary" href="register.html">
+            Create Your Account
+        </a>
+    </section>
+
+</main>
+
+<footer>
+    <p>&copy; <span id="year"></span> ExamTrack. Keep learning. Keep improving.</p>
+</footer>
+
+<script>
+    document.getElementById("year").textContent =
+        new Date().getFullYear();
+</script>
+
+</body>
+</html>

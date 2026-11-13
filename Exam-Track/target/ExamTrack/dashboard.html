@@ -1,0 +1,1170 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ExamTrack - Student Dashboard</title>
+
+<style>
+:root {
+    --primary: #5b5ce2;
+    --dark: #171b35;
+    --background: #f5f7fc;
+    --border: #e5e7ef;
+    --muted: #737b91;
+    --white: #ffffff;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: var(--background);
+    color: #20243a;
+}
+button, input, select, textarea { font: inherit; }
+button { cursor: pointer; }
+.layout { display: flex; min-height: 100vh; }
+.sidebar {
+    width: 245px;
+    flex-shrink: 0;
+    background: var(--dark);
+    color: white;
+    padding: 25px 17px;
+}
+.brand { font-size: 25px; font-weight: 800; margin: 0 10px 7px; }
+.brand span { color: #a2a3ff; }
+.tagline {
+    color: #aeb4d0;
+    font-size: 11px;
+    margin: 0 10px 32px;
+}
+.nav-heading {
+    font-size: 11px;
+    color: #969fbd;
+    letter-spacing: 1.4px;
+    margin: 20px 10px 12px;
+}
+.nav-item {
+    display: block;
+    width: 100%;
+    padding: 13px 12px;
+    margin-bottom: 5px;
+    border: 0;
+    border-radius: 9px;
+    color: #cbd0e6;
+    background: transparent;
+    text-align: left;
+}
+.nav-item:hover, .nav-item.active {
+    background: #34395f;
+    color: white;
+}
+.main { flex: 1; min-width: 0; padding: 28px; }
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 26px;
+}
+.topbar h1 { font-size: 27px; margin-bottom: 5px; }
+.muted { color: var(--muted); font-size: 13px; line-height: 1.6; }
+.user-chip {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: white;
+    padding: 9px 13px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+}
+.avatar {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: var(--primary);
+    color: white;
+    display: grid;
+    place-items: center;
+    font-weight: bold;
+}
+.welcome {
+    background: linear-gradient(120deg, #4e50d8, #898aff);
+    color: white;
+    border-radius: 17px;
+    padding: 28px;
+    margin-bottom: 25px;
+}
+.welcome h2 { margin-bottom: 10px; }
+.welcome p { color: #f0f0ff; line-height: 1.7; }
+.section-title { margin: 26px 0 15px; font-size: 19px; }
+.stats {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 14px;
+}
+.stat, .card, .exam-card, .activity {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 15px;
+    padding: 21px;
+}
+.stat-label { color: var(--muted); font-size: 13px; }
+.stat-number { font-size: 27px; font-weight: 750; margin-top: 10px; }
+.exam-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 15px;
+}
+.exam-card { padding: 20px; }
+.exam-icon {
+    font-size: 25px;
+    margin-bottom: 16px;
+}
+.exam-card h3 { margin-bottom: 10px; }
+.exam-card p {
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.7;
+    min-height: 65px;
+}
+.btn {
+    background: var(--primary);
+    color: white;
+    border: 0;
+    border-radius: 9px;
+    padding: 11px 16px;
+    margin-top: 13px;
+    font-size: 13px;
+    font-weight: 650;
+}
+.btn:hover { background: #4546c5; }
+.btn:disabled { opacity: .6; cursor: not-allowed; }
+.btn-light { background: #eeeeff; color: var(--primary); }
+.bottom-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-top: 22px;
+}
+.activity h3 { margin-bottom: 13px; }
+.activity-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+}
+.view { display: none; }
+.view.active { display: block; }
+.field {
+    display: block;
+    width: 100%;
+    margin-top: 8px;
+    padding: 12px;
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 9px;
+}
+.code-editor {
+    width: 100%;
+    min-height: 300px;
+    resize: vertical;
+    display: block;
+    margin-top: 8px;
+    padding: 15px;
+    border: 1px solid #303651;
+    border-radius: 10px;
+    background: #171b2b;
+    color: #f5f5ff;
+    font-family: Consolas, monospace;
+    font-size: 14px;
+    line-height: 1.6;
+}
+.message {
+    padding: 13px;
+    margin: 15px 0;
+    border-radius: 9px;
+    background: #eeeeff;
+    line-height: 1.6;
+    overflow-wrap: anywhere;
+}
+.message.error { background: #fff0f0; color: #9b1c1c; }
+.message.success { background: #e1f8e9; color: #166534; }
+.question {
+    padding: 18px;
+    margin: 15px 0;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: white;
+}
+.question h3 { font-size: 16px; line-height: 1.6; margin-bottom: 12px; }
+.option {
+    display: block;
+    padding: 10px;
+    margin-top: 6px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    cursor: pointer;
+}
+.option input { margin-right: 8px; }
+pre {
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    margin-top: 5px;
+    line-height: 1.6;
+}
+.problem-details h4 { margin-top: 15px; }
+.profile-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 12px;
+    margin-top: 20px;
+}
+.profile-stat {
+    background: #f8f9ff;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 15px;
+}
+.profile-stat h3 { font-size: 24px; margin-top: 7px; }
+.profile-panel { margin-top: 18px; }
+.profile-panel h3 { margin-bottom: 12px; }
+.profile-row {
+    padding: 11px 0;
+    border-bottom: 1px solid var(--border);
+    overflow-wrap: anywhere;
+}
+.profile-row:last-child { border-bottom: 0; }
+.table-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; min-width: 520px; }
+th, td {
+    text-align: left;
+    padding: 11px;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+}
+th { background: #f8f9ff; }
+@media (max-width: 1000px) {
+    .stats, .profile-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .exam-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 700px) {
+    .layout { display: block; }
+    .sidebar { width: 100%; padding: 17px; }
+    .tagline, .nav-heading { display: none; }
+    .sidebar nav { display: flex; overflow-x: auto; gap: 5px; margin-top: 15px; }
+    .nav-item { width: auto; white-space: nowrap; }
+    .main { padding: 17px; }
+    .topbar h1 { font-size: 21px; }
+    .user-info { display: none; }
+    .stats, .exam-grid, .bottom-grid, .profile-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+
+<body>
+<div class="layout">
+
+<aside class="sidebar">
+    <div class="brand">Exam<span>Track</span></div>
+    <div class="tagline">LEARN · PRACTICE · ACHIEVE</div>
+    <div class="nav-heading">STUDENT MENU</div>
+
+    <nav>
+        <button class="nav-item active" data-view="home">🏠 Dashboard</button>
+        <button class="nav-item" data-view="quick">⚡ Quick Test</button>
+        <button class="nav-item" data-view="weekly">📅 Weekly Tests</button>
+        <button class="nav-item" data-view="coding">💻 Coding Test</button>
+        <button class="nav-item" data-view="daily">📝 Daily Assignments</button>
+        <button class="nav-item" data-view="profile">👤 My Profile</button>
+    </nav>
+</aside>
+
+<main class="main">
+
+<header class="topbar">
+    <div>
+        <h1 id="pageTitle">Student Dashboard</h1>
+        <p class="muted">Your learning journey starts here.</p>
+    </div>
+    <div class="user-chip">
+        <div class="avatar" id="avatar">S</div>
+        <div class="user-info">
+            <strong id="studentName">Student</strong>
+            <p class="muted">ExamTrack learner</p>
+        </div>
+    </div>
+</header>
+
+<!-- DASHBOARD -->
+<section class="view active" id="home">
+    <div class="welcome">
+        <h2>Welcome to ExamTrack! 👋</h2>
+        <p>Practice aptitude, improve coding skills, complete assignments, and track your progress.</p>
+    </div>
+
+    <h2 class="section-title">Your Overview</h2>
+    <div class="stats">
+        <div class="stat">
+            <div class="stat-label">Tests Completed</div>
+            <div class="stat-number" id="testsCompleted">--</div>
+        </div>
+        <div class="stat">
+            <div class="stat-label">Accuracy</div>
+            <div class="stat-number" id="accuracy">--</div>
+        </div>
+        <div class="stat">
+            <div class="stat-label">Code Submissions</div>
+            <div class="stat-number" id="codeCount">--</div>
+        </div>
+        <div class="stat">
+            <div class="stat-label">Active Days</div>
+            <div class="stat-number" id="activeDays">--</div>
+        </div>
+    </div>
+
+    <h2 class="section-title">Practice Sections</h2>
+    <div class="exam-grid">
+        <article class="exam-card">
+            <div class="exam-icon">⚡</div>
+            <h3>Quick Test</h3>
+            <p>Test your aptitude and reasoning skills.</p>
+            <button class="btn" data-view="quick">Start Quick Test</button>
+        </article>
+        <article class="exam-card">
+            <div class="exam-icon">📅</div>
+            <h3>Weekly Tests</h3>
+            <p>Take your weekly aptitude assessment.</p>
+            <button class="btn" data-view="weekly">Start Weekly Test</button>
+        </article>
+        <article class="exam-card">
+            <div class="exam-icon">💻</div>
+            <h3>Coding Test</h3>
+            <p>Write solutions in C, C++, Java, or Python.</p>
+            <button class="btn" data-view="coding">Open Coding Test</button>
+        </article>
+    </div>
+
+    <div class="bottom-grid">
+        <div class="activity">
+            <h3>Recent Activity</h3>
+            <div id="recentActivity" class="muted">Loading history...</div>
+        </div>
+        <div class="activity">
+            <h3>Daily Assignments</h3>
+            <p class="muted">Write your code and save your submissions to your account.</p>
+            <button class="btn btn-light" data-view="daily">Open Assignments</button>
+        </div>
+    </div>
+</section>
+
+<!-- QUICK TEST -->
+<section class="view" id="quick">
+    <div class="card">
+        <h2>⚡ Quick Test</h2>
+        <p class="muted">Aptitude practice assessment.</p>
+        <div id="quickMessage" class="message" style="display:none"></div>
+        <button class="btn" id="startQuick">Load Quick Test</button>
+        <div id="quickArea" style="display:none">
+            <p id="quickTimer" style="margin-top:15px;font-weight:bold"></p>
+            <form id="quickForm">
+                <div id="quickQuestions"></div>
+                <button class="btn" type="submit" id="quickSubmit">Submit Answers</button>
+            </form>
+        </div>
+        <div id="quickResult"></div>
+    </div>
+</section>
+
+<!-- WEEKLY TEST -->
+<section class="view" id="weekly">
+    <div class="card">
+        <h2>📅 Weekly Tests</h2>
+        <p class="muted">Weekly aptitude assessment.</p>
+        <div id="weeklyMessage" class="message" style="display:none"></div>
+        <button class="btn" id="startWeekly">Load Weekly Test</button>
+        <div id="weeklyArea" style="display:none">
+            <p id="weeklyTimer" style="margin-top:15px;font-weight:bold"></p>
+            <form id="weeklyForm">
+                <div id="weeklyQuestions"></div>
+                <button class="btn" type="submit" id="weeklySubmit">Submit Answers</button>
+            </form>
+        </div>
+        <div id="weeklyResult"></div>
+    </div>
+</section>
+
+<!-- CODING TEST -->
+<section class="view" id="coding">
+    <div class="card">
+        <h2>💻 Coding Test</h2>
+        <p class="muted">Select a problem, write your solution, and submit it to the database.</p>
+
+        <div id="codingMessage" class="message" style="display:none"></div>
+
+        <label for="codingProblem"><strong>Select Problem</strong></label>
+        <select id="codingProblem" class="field">
+            <option value="">Loading problems...</option>
+        </select>
+
+        <div id="codingProblemDetails" class="problem-details" style="margin-top:20px"></div>
+
+        <label for="codingLanguage" style="display:block;margin-top:20px">
+            <strong>Programming Language</strong>
+        </label>
+        <select id="codingLanguage" class="field">
+            <option value="C">C</option>
+            <option value="CPP">C++</option>
+            <option value="JAVA">Java</option>
+            <option value="PYTHON">Python</option>
+        </select>
+
+        <label for="sourceCode" style="display:block;margin-top:20px">
+            <strong>Your Code</strong>
+        </label>
+        <textarea id="sourceCode" class="code-editor" spellcheck="false"
+            placeholder="Write your code here..."></textarea>
+
+        <button class="btn" id="submitCodingCode">Submit Code</button>
+        <div id="codingOutput"></div>
+    </div>
+</section>
+
+<!-- DAILY ASSIGNMENTS -->
+<section class="view" id="daily">
+    <div class="card">
+        <h2>📝 Daily Assignments</h2>
+        <p class="muted">Choose an assignment, write code, and submit it for saving.</p>
+
+        <div id="dailyMessage" class="message" style="display:none"></div>
+
+        <label for="dailyProblem"><strong>Select Assignment</strong></label>
+        <select id="dailyProblem" class="field">
+            <option value="">Loading assignments...</option>
+        </select>
+
+        <div id="dailyProblemDetails" class="problem-details" style="margin-top:20px"></div>
+
+        <label for="dailyLanguage" style="display:block;margin-top:20px">
+            <strong>Programming Language</strong>
+        </label>
+        <select id="dailyLanguage" class="field">
+            <option value="C">C</option>
+            <option value="CPP">C++</option>
+            <option value="JAVA">Java</option>
+            <option value="PYTHON">Python</option>
+        </select>
+
+        <label for="dailySourceCode" style="display:block;margin-top:20px">
+            <strong>Your Code</strong>
+        </label>
+        <textarea id="dailySourceCode" class="code-editor" spellcheck="false"
+            placeholder="Write your assignment code here..."></textarea>
+
+        <button class="btn" id="submitDailyCode">Submit Assignment</button>
+        <div id="dailyOutput"></div>
+    </div>
+</section>
+
+<!-- PROFILE -->
+<section class="view" id="profile">
+    <div class="card">
+        <h2>👤 My Profile</h2>
+        <p class="muted">Your account and performance information.</p>
+
+        <div id="profileMessage" class="message">Loading profile...</div>
+
+        <div id="profileContent" style="display:none">
+            <div class="profile-grid">
+                <div class="profile-stat">
+                    <p class="muted">Tests Completed</p>
+                    <h3 id="profileTests">0</h3>
+                </div>
+                <div class="profile-stat">
+                    <p class="muted">Average Score</p>
+                    <h3 id="profileAverage">0</h3>
+                </div>
+                <div class="profile-stat">
+                    <p class="muted">Best Score</p>
+                    <h3 id="profileBest">0</h3>
+                </div>
+                <div class="profile-stat">
+                    <p class="muted">Active Days</p>
+                    <h3 id="profileDays">0</h3>
+                </div>
+            </div>
+
+            <div class="card profile-panel">
+                <h3>Account Details</h3>
+                <div class="profile-row">Name: <strong id="profileName">--</strong></div>
+                <div class="profile-row">Email: <strong id="profileEmail">--</strong></div>
+                <div class="profile-row">Mobile: <strong id="profileMobile">--</strong></div>
+                <div class="profile-row">Joined: <strong id="profileJoined">--</strong></div>
+            </div>
+
+            <div class="card profile-panel">
+                <h3>Aptitude Strengths</h3>
+                <div id="profileStrengths" class="muted">No aptitude data available.</div>
+            </div>
+
+            <div class="card profile-panel">
+                <h3>Exam History</h3>
+                <div id="profileHistory" class="table-wrap muted">No exam results yet.</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+</main>
+</div>
+
+<script>
+"use strict";
+
+/* Determine the web application's context path. */
+const contextPath = (() => {
+    const path = window.location.pathname;
+    const knownPages = ["/dashboard.html", "/login.html", "/register.html"];
+
+    for (const page of knownPages) {
+        if (path.endsWith(page)) {
+            return path.slice(0, -page.length);
+        }
+    }
+
+    const slash = path.indexOf("/", 1);
+    return slash < 0 ? path : path.slice(0, slash);
+})();
+
+const $ = id => document.getElementById(id);
+
+const titles = {
+    home: "Student Dashboard",
+    quick: "Quick Test",
+    weekly: "Weekly Tests",
+    coding: "Coding Test",
+    daily: "Daily Assignments",
+    profile: "My Profile"
+};
+
+function escapeHTML(value) {
+    return String(value ?? "").replace(/[&<>"']/g, character => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+    })[character]);
+}
+
+function showMessage(id, message, type = "") {
+    const element = $(id);
+    element.textContent = message;
+    element.className = "message " + type;
+    element.style.display = "block";
+}
+
+function hideMessage(id) {
+    $(id).style.display = "none";
+}
+
+/* API helper */
+async function apiRequest(path, options = {}) {
+    const headers = { ...(options.headers || {}) };
+
+    if (options.body) {
+        headers["Content-Type"] = "application/json";
+    }
+
+    const response = await fetch(contextPath + path, {
+        ...options,
+        headers,
+        credentials: "same-origin"
+    });
+
+    const text = await response.text();
+    let data;
+
+    try {
+        data = JSON.parse(text);
+    } catch {
+        throw new Error(
+            "Unexpected server response. Check the API URL and Tomcat logs."
+        );
+    }
+
+    if (!response.ok || data.success === false) {
+        throw new Error(
+            data.message || data.error || `Request failed: ${response.status}`
+        );
+    }
+
+    return data;
+}
+
+/* Navigation */
+function showView(view) {
+    if (!$(view)) return;
+
+    document.querySelectorAll(".view").forEach(section => {
+        section.classList.toggle("active", section.id === view);
+    });
+
+    document.querySelectorAll(".nav-item").forEach(button => {
+        button.classList.toggle("active", button.dataset.view === view);
+    });
+
+    $("pageTitle").textContent = titles[view] || "ExamTrack";
+
+    if (view === "home") loadHomeSummary();
+    if (view === "profile") loadProfile();
+    if (view === "coding" || view === "daily") loadCodingQuestions();
+}
+
+document.querySelectorAll("[data-view]").forEach(button => {
+    button.addEventListener("click", () => showView(button.dataset.view));
+});
+
+/* Dashboard and profile */
+async function loadHomeSummary() {
+    try {
+        const data = await apiRequest("/profile");
+        const stats = data.stats || {};
+        const history = data.history || [];
+        const strengths = data.strengths || [];
+
+        $("testsCompleted").textContent = stats.totalExams ?? 0;
+        $("activeDays").textContent = stats.activeDays ?? 0;
+
+        const answered = strengths.reduce(
+            (sum, item) => sum + Number(item.answered || 0), 0
+        );
+        const correct = strengths.reduce(
+            (sum, item) => sum + Number(item.correct || 0), 0
+        );
+
+        $("accuracy").textContent = answered
+            ? Math.round(correct * 100 / answered) + "%"
+            : "--";
+
+        $("recentActivity").innerHTML = history.length
+            ? history.slice(0, 5).map(item => `
+                <div class="activity-row">
+                    <span>${escapeHTML(item.examType)}</span>
+                    <strong>${escapeHTML(item.totalScore ?? 0)}</strong>
+                </div>
+            `).join("")
+            : "No completed tests yet.";
+    } catch (error) {
+        $("recentActivity").textContent = error.message;
+    }
+
+    try {
+        const data = await apiRequest("/coding-test/submissions/count");
+        $("codeCount").textContent = data.count ?? 0;
+    } catch {
+        $("codeCount").textContent = "--";
+    }
+}
+
+async function loadProfile() {
+    showMessage("profileMessage", "Loading profile...");
+    $("profileContent").style.display = "none";
+
+    try {
+        const data = await apiRequest("/profile");
+        const student = data.student || {};
+        const stats = data.stats || {};
+        const history = data.history || [];
+        const strengths = data.strengths || [];
+
+        $("profileName").textContent = student.fullName || "—";
+        $("profileEmail").textContent = student.email || "—";
+        $("profileMobile").textContent = student.mobile || "Not provided";
+        $("profileJoined").textContent = student.createdAt || "—";
+
+        $("studentName").textContent = student.fullName || "Student";
+        $("avatar").textContent =
+            (student.fullName || "S").trim().charAt(0).toUpperCase();
+
+        $("profileTests").textContent = stats.totalExams ?? 0;
+        $("profileAverage").textContent = Number(stats.averageScore || 0).toFixed(2);
+        $("profileBest").textContent = Number(stats.bestScore || 0).toFixed(2);
+        $("profileDays").textContent = stats.activeDays ?? 0;
+
+        $("profileStrengths").innerHTML = strengths.length
+            ? strengths.map(item => `
+                <div class="profile-row">
+                    <strong>${escapeHTML(item.category)}</strong>
+                    <span style="float:right">${Number(item.accuracy || 0)}%</span>
+                </div>
+            `).join("")
+            : "Complete aptitude tests to view your strengths.";
+
+        $("profileHistory").innerHTML = history.length
+            ? `<table>
+                <thead>
+                    <tr><th>Exam</th><th>Aptitude</th><th>Coding</th><th>Total</th></tr>
+                </thead>
+                <tbody>
+                    ${history.map(item => `
+                        <tr>
+                            <td>${escapeHTML(item.examType)}</td>
+                            <td>${escapeHTML(item.aptitudeScore ?? 0)}</td>
+                            <td>${escapeHTML(item.codingScore ?? 0)}</td>
+                            <td><strong>${escapeHTML(item.totalScore ?? 0)}</strong></td>
+                        </tr>
+                    `).join("")}
+                </tbody>
+            </table>`
+            : "No exam results available.";
+
+        hideMessage("profileMessage");
+        $("profileContent").style.display = "block";
+    } catch (error) {
+        showMessage("profileMessage", error.message, "error");
+    }
+}
+
+/* Coding Test and Daily Assignments */
+let codingProblems = [];
+let codingLoadPromise = null;
+
+async function loadCodingQuestions() {
+    if (codingProblems.length) {
+        populateProblemLists();
+        return;
+    }
+
+    if (codingLoadPromise) {
+        await codingLoadPromise;
+        return;
+    }
+
+    codingLoadPromise = (async () => {
+        try {
+            const data = await apiRequest("/coding-test/questions");
+            codingProblems = data.questions || [];
+
+            if (!codingProblems.length) {
+                $("codingProblem").innerHTML =
+                    '<option value="">No problems available</option>';
+                $("dailyProblem").innerHTML =
+                    '<option value="">No assignments available</option>';
+
+                showMessage(
+                    "codingMessage",
+                    "No active coding questions were found.",
+                    "error"
+                );
+                showMessage(
+                    "dailyMessage",
+                    "No active assignment questions were found.",
+                    "error"
+                );
+                return;
+            }
+
+            populateProblemLists();
+            hideMessage("codingMessage");
+            hideMessage("dailyMessage");
+        } catch (error) {
+            showMessage("codingMessage", error.message, "error");
+            showMessage("dailyMessage", error.message, "error");
+        } finally {
+            codingLoadPromise = null;
+        }
+    })();
+
+    await codingLoadPromise;
+}
+
+function populateProblemLists() {
+    const options = codingProblems.map(question =>
+        `<option value="${escapeHTML(question.id)}">${escapeHTML(question.title)}</option>`
+    ).join("");
+
+    const oldCoding = $("codingProblem").value;
+    const oldDaily = $("dailyProblem").value;
+
+    $("codingProblem").innerHTML = options;
+    $("dailyProblem").innerHTML = options;
+
+    if (codingProblems.some(q => String(q.id) === oldCoding)) {
+        $("codingProblem").value = oldCoding;
+    }
+
+    if (codingProblems.some(q => String(q.id) === oldDaily)) {
+        $("dailyProblem").value = oldDaily;
+    }
+
+    renderProblem("codingProblem", "codingProblemDetails");
+    renderProblem("dailyProblem", "dailyProblemDetails");
+}
+
+function renderProblem(selectId, detailsId) {
+    const question = codingProblems.find(
+        item => String(item.id) === String($(selectId).value)
+    );
+
+    if (!question) {
+        $(detailsId).innerHTML = '<p class="muted">Select a question.</p>';
+        return;
+    }
+
+    $(detailsId).innerHTML = `
+        <div class="question">
+            <h3>${escapeHTML(question.title)}</h3>
+            <p style="line-height:1.7;white-space:pre-wrap">${escapeHTML(question.problemStatement || "")}</p>
+            <h4>Input Format</h4>
+            <pre>${escapeHTML(question.inputFormat || "See problem statement.")}</pre>
+            <h4>Output Format</h4>
+            <pre>${escapeHTML(question.outputFormat || "Print the required output.")}</pre>
+            <h4>Constraints</h4>
+            <pre>${escapeHTML(question.constraints || "No constraints provided.")}</pre>
+            <h4>Sample Input</h4>
+            <pre>${escapeHTML(question.sampleInput || "")}</pre>
+            <h4>Sample Output</h4>
+            <pre>${escapeHTML(question.sampleOutput || "")}</pre>
+        </div>
+    `;
+}
+
+$("codingProblem").addEventListener("change", () => {
+    renderProblem("codingProblem", "codingProblemDetails");
+});
+
+$("dailyProblem").addEventListener("change", () => {
+    renderProblem("dailyProblem", "dailyProblemDetails");
+});
+
+$("submitCodingCode").addEventListener("click", () => submitCode("CODING_TEST"));
+$("submitDailyCode").addEventListener("click", () => submitCode("DAILY_ASSIGNMENT"));
+
+async function submitCode(section) {
+    const daily = section === "DAILY_ASSIGNMENT";
+
+    const questionId = $(daily ? "dailyProblem" : "codingProblem").value;
+    const language = $(daily ? "dailyLanguage" : "codingLanguage").value;
+    const sourceCode = $(daily ? "dailySourceCode" : "sourceCode").value;
+    const button = $(daily ? "submitDailyCode" : "submitCodingCode");
+    const output = $(daily ? "dailyOutput" : "codingOutput");
+    const messageId = daily ? "dailyMessage" : "codingMessage";
+
+    if (!questionId) {
+        showMessage(messageId, "Please select a question.", "error");
+        return;
+    }
+
+    if (!sourceCode.trim()) {
+        showMessage(messageId, "Please enter your code first.", "error");
+        return;
+    }
+
+    if (sourceCode.length > 100000) {
+        showMessage(messageId, "Your code is too large.", "error");
+        return;
+    }
+
+    button.disabled = true;
+    button.textContent = "Saving submission...";
+    output.innerHTML = "";
+    showMessage(messageId, "Saving your code to MySQL...");
+
+    try {
+        const result = await apiRequest("/coding-test/submit", {
+            method: "POST",
+            body: JSON.stringify({
+                questionId: Number(questionId),
+                language: language,
+                sourceCode: sourceCode,
+                section: section
+            })
+        });
+
+        showMessage(
+            messageId,
+            result.message || "Code submitted and saved successfully.",
+            "success"
+        );
+
+        output.innerHTML = `
+            <div class="message success">
+                <h3>Submission Saved Successfully!</h3>
+                <p>Submission ID: ${Number(result.submissionId)}</p>
+                <p>Section: ${escapeHTML(result.section)}</p>
+                <p>Language: ${escapeHTML(result.language)}</p>
+                <p>Your source code has been saved in MySQL.
+                It has not been compiled or executed.</p>
+            </div>
+        `;
+
+        loadHomeSummary();
+    } catch (error) {
+        showMessage(messageId, error.message, "error");
+    } finally {
+        button.disabled = false;
+        button.textContent = daily ? "Submit Assignment" : "Submit Code";
+    }
+}
+
+/* Aptitude question rendering */
+function renderAptitudeQuestions(targetId, questions, answers, prefix) {
+    $(targetId).innerHTML = questions.map((question, index) => {
+        const id = String(question.id);
+        const text = question.questionText ?? question.question_text;
+        const options = [
+            ["A", question.optionA ?? question.option_a],
+            ["B", question.optionB ?? question.option_b],
+            ["C", question.optionC ?? question.option_c],
+            ["D", question.optionD ?? question.option_d]
+        ];
+
+        return `
+            <div class="question">
+                <h3>${index + 1}. ${escapeHTML(text)}</h3>
+                ${options.map(([letter, value]) => `
+                    <label class="option">
+                        <input type="radio"
+                            name="${prefix}_${escapeHTML(id)}"
+                            value="${letter}"
+                            ${answers[id] === letter ? "checked" : ""}>
+                        <strong>${letter}.</strong> ${escapeHTML(value)}
+                    </label>
+                `).join("")}
+            </div>
+        `;
+    }).join("");
+
+    $(targetId).querySelectorAll('input[type="radio"]').forEach(input => {
+        input.addEventListener("change", event => {
+            answers[event.target.name.slice(prefix.length + 1)] =
+                event.target.value;
+        });
+    });
+}
+
+/*
+ * The following test functions call the corresponding servlet endpoints.
+ * They expect JSON with a "questions" array and submission response fields.
+ */
+let quickQuestions = [];
+let quickAnswers = {};
+let quickTimer = null;
+let quickSeconds = 1200;
+let quickSubmitting = false;
+
+$("startQuick").addEventListener("click", startQuickTest);
+$("quickForm").addEventListener("submit", event => {
+    event.preventDefault();
+    submitQuickTest();
+});
+
+async function startQuickTest() {
+    $("startQuick").disabled = true;
+    showMessage("quickMessage", "Loading questions...");
+
+    try {
+        const data = await apiRequest("/quick-test/questions");
+
+        if (!Array.isArray(data.questions) || !data.questions.length) {
+            throw new Error("No Quick Test questions were returned.");
+        }
+
+        quickQuestions = data.questions;
+        quickAnswers = {};
+        quickSeconds = 1200;
+        quickSubmitting = false;
+
+        $("quickResult").innerHTML = "";
+        $("quickArea").style.display = "block";
+        $("startQuick").style.display = "none";
+        $("quickSubmit").disabled = false;
+        hideMessage("quickMessage");
+
+        renderAptitudeQuestions(
+            "quickQuestions", quickQuestions, quickAnswers, "quick"
+        );
+
+        clearInterval(quickTimer);
+        updateQuickTimer();
+        quickTimer = setInterval(updateQuickTimer, 1000);
+    } catch (error) {
+        showMessage("quickMessage", error.message, "error");
+    } finally {
+        $("startQuick").disabled = false;
+    }
+}
+
+function updateQuickTimer() {
+    $("quickTimer").textContent =
+        "Time remaining: " +
+        String(Math.floor(quickSeconds / 60)).padStart(2, "0") + ":" +
+        String(quickSeconds % 60).padStart(2, "0");
+
+    if (quickSeconds <= 0) {
+        clearInterval(quickTimer);
+        submitQuickTest();
+        return;
+    }
+
+    quickSeconds--;
+}
+
+async function submitQuickTest() {
+    if (quickSubmitting || !quickQuestions.length) return;
+
+    quickSubmitting = true;
+    clearInterval(quickTimer);
+    $("quickSubmit").disabled = true;
+    showMessage("quickMessage", "Submitting answers...");
+
+    try {
+        const result = await apiRequest("/quick-test/submit", {
+            method: "POST",
+            body: JSON.stringify({ answers: quickAnswers })
+        });
+
+        $("quickArea").style.display = "none";
+        hideMessage("quickMessage");
+
+        $("quickResult").innerHTML = `
+            <div class="message success">
+                <h3>Quick Test Submitted</h3>
+                <p>Score: ${escapeHTML(result.score ?? result.aptitudeScore ?? 0)}</p>
+                <p>Correct answers: ${escapeHTML(result.correctAnswers ?? "—")}</p>
+            </div>
+            <button class="btn" id="quickAgain">Return to Dashboard</button>
+        `;
+
+        $("quickAgain").addEventListener("click", () => {
+            quickQuestions = [];
+            $("quickArea").style.display = "none";
+            $("quickResult").innerHTML = "";
+            $("startQuick").style.display = "inline-block";
+            loadHomeSummary();
+            showView("home");
+        });
+
+        loadHomeSummary();
+    } catch (error) {
+        showMessage("quickMessage", error.message, "error");
+        $("quickSubmit").disabled = false;
+        quickSubmitting = false;
+    }
+}
+
+/* Weekly test */
+let weeklyQuestions = [];
+let weeklyAnswers = {};
+let weeklyTimer = null;
+let weeklySeconds = 1200;
+let weeklySubmitting = false;
+
+$("startWeekly").addEventListener("click", startWeeklyTest);
+$("weeklyForm").addEventListener("submit", event => {
+    event.preventDefault();
+    submitWeeklyTest();
+});
+
+async function startWeeklyTest() {
+    $("startWeekly").disabled = true;
+    showMessage("weeklyMessage", "Loading questions...");
+
+    try {
+        const data = await apiRequest("/weekly-test/questions");
+
+        if (!Array.isArray(data.questions) || !data.questions.length) {
+            throw new Error("No Weekly Test questions were returned.");
+        }
+
+        weeklyQuestions = data.questions;
+        weeklyAnswers = {};
+        weeklySeconds = 1200;
+        weeklySubmitting = false;
+
+        $("weeklyResult").innerHTML = "";
+        $("weeklyArea").style.display = "block";
+        $("startWeekly").style.display = "none";
+        $("weeklySubmit").disabled = false;
+        hideMessage("weeklyMessage");
+
+        renderAptitudeQuestions(
+            "weeklyQuestions", weeklyQuestions, weeklyAnswers, "weekly"
+        );
+
+        clearInterval(weeklyTimer);
+        updateWeeklyTimer();
+        weeklyTimer = setInterval(updateWeeklyTimer, 1000);
+    } catch (error) {
+        showMessage("weeklyMessage", error.message, "error");
+    } finally {
+        $("startWeekly").disabled = false;
+    }
+}
+
+function updateWeeklyTimer() {
+    $("weeklyTimer").textContent =
+        "Time remaining: " +
+        String(Math.floor(weeklySeconds / 60)).padStart(2, "0") + ":" +
+        String(weeklySeconds % 60).padStart(2, "0");
+
+    if (weeklySeconds <= 0) {
+        clearInterval(weeklyTimer);
+        submitWeeklyTest();
+        return;
+    }
+
+    weeklySeconds--;
+}
+
+async function submitWeeklyTest() {
+    if (weeklySubmitting || !weeklyQuestions.length) return;
+
+    weeklySubmitting = true;
+    clearInterval(weeklyTimer);
+    $("weeklySubmit").disabled = true;
+    showMessage("weeklyMessage", "Submitting answers...");
+
+    try {
+        const result = await apiRequest("/weekly-test/submit", {
+            method: "POST",
+            body: JSON.stringify({ answers: weeklyAnswers })
+        });
+
+        $("weeklyArea").style.display = "none";
+        hideMessage("weeklyMessage");
+
+        $("weeklyResult").innerHTML = `
+            <div class="message success">
+                <h3>Weekly Test Submitted</h3>
+                <p>Score: ${escapeHTML(result.score ?? result.aptitudeScore ?? 0)}</p>
+                <p>Correct answers: ${escapeHTML(result.correctAnswers ?? "—")}</p>
+            </div>
+            <button class="btn" id="weeklyAgain">Return to Dashboard</button>
+        `;
+
+        $("weeklyAgain").addEventListener("click", () => {
+            weeklyQuestions = [];
+            $("weeklyArea").style.display = "none";
+            $("weeklyResult").innerHTML = "";
+            $("startWeekly").style.display = "inline-block";
+            loadHomeSummary();
+            showView("home");
+        });
+
+        loadHomeSummary();
+    } catch (error) {
+        showMessage("weeklyMessage", error.message, "error");
+        $("weeklySubmit").disabled = false;
+        weeklySubmitting = false;
+    }
+}
+
+/* Initialize dashboard */
+loadHomeSummary();
+</script>
+</body>
+</html>

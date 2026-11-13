@@ -1,0 +1,250 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ExamTrack - Quick Test</title>
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f3f5fb;
+            color: #1e293b;
+        }
+        header {
+            background: #172554;
+            color: white;
+            padding: 20px;
+        }
+        header h1 { margin: 0 0 6px; }
+        main { max-width: 850px; margin: 25px auto; padding: 16px; }
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 22px;
+            margin-bottom: 18px;
+            box-shadow: 0 3px 12px #0000000d;
+        }
+        .question { font-weight: bold; margin-bottom: 14px; }
+        .option {
+            display: block;
+            border: 1px solid #dbe2ef;
+            border-radius: 8px;
+            padding: 12px;
+            margin: 8px 0;
+            cursor: pointer;
+        }
+        .option:hover { background: #eff6ff; }
+        button {
+            background: #2563eb;
+            color: white;
+            border: 0;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 15px;
+            margin: 5px 5px 5px 0;
+        }
+        button:disabled { opacity: .5; cursor: not-allowed; }
+        .secondary { background: #475569; }
+        #message { white-space: pre-wrap; line-height: 1.6; }
+        .hidden { display: none; }
+        .muted { color: #64748b; }
+    </style>
+</head>
+<body>
+<header>
+    <h1>ExamTrack</h1>
+    <div>Quick Test · 20 aptitude questions · 20 marks</div>
+</header>
+
+<main>
+    <section class="card" id="welcome">
+        <h2>Ready to begin?</h2>
+        <p>This test selects 20 active aptitude questions from the database.</p>
+        <p class="muted">Once you start, answer the questions and submit your test to see your score.</p>
+        <button id="startBtn" onclick="startTest()">Start Quick Test</button>
+    </section>
+
+    <section class="card hidden" id="testArea">
+        <div id="progress" class="muted"></div>
+        <div id="questions"></div>
+        <button onclick="submitTest()">Submit Test</button>
+        <button class="secondary" onclick="backToDashboard()">Dashboard</button>
+    </section>
+
+    <section class="card hidden" id="resultArea">
+        <h2>Test Result</h2>
+        <div id="result"></div>
+        <button onclick="startTest()">Take Another Test</button>
+        <button class="secondary" onclick="backToDashboard()">Dashboard</button>
+    </section>
+
+    <section class="card">
+        <div id="message" role="status"></div>
+    </section>
+</main>
+
+<script>
+    const context = window.location.pathname.substring(
+        0, window.location.pathname.lastIndexOf("/")
+    );
+
+    let questions = [];
+    let submitting = false;
+
+    async function startTest() {
+        const startBtn = document.getElementById("startBtn");
+        startBtn.disabled = true;
+        showMessage("Loading questions...");
+
+        try {
+            const response = await fetch(context + "/quick-test/questions", {
+                method: "GET",
+                credentials: "same-origin"
+            });
+
+            const data = await response.json();
+
+            if (!response.ok || !data.success) {
+                throw new Error(data.message || "Could not load questions.");
+            }
+
+            questions = data.questions || [];
+
+            if (questions.length !== 20) {
+                throw new Error("The server did not return 20 questions.");
+            }
+
+            document.getElementById("welcome").classList.add("hidden");
+            document.getElementById("resultArea").classList.add("hidden");
+            document.getElementById("testArea").classList.remove("hidden");
+
+            renderQuestions();
+            showMessage("");
+        } catch (error) {
+            showMessage("Unable to start the test: " + error.message);
+        } finally {
+            startBtn.disabled = false;
+        }
+    }
+
+    function escapeHtml(value) {
+        return String(value ?? "").replace(/[&<>"']/g, character => ({
+            "&": "&amp;",
+            "<": "&lt;",
+            ">": "&gt;",
+            '"': "&quot;",
+            "'": "&#39;"
+        })[character]);
+    }
+
+    function renderQuestions() {
+        const container = document.getElementById("questions");
+        container.innerHTML = "";
+
+        document.getElementById("progress").textContent =
+            questions.length + " questions · Select one answer per question";
+
+        questions.forEach((question, index) => {
+            const card = document.createElement("div");
+            card.className = "card";
+
+            const options = [
+                ["A", question.optionA],
+                ["B", question.optionB],
+                ["C", question.optionC],
+                ["D", question.optionD]
+            ];
+
+            card.innerHTML = `
+                <div class="question">
+                    ${index + 1}. ${escapeHtml(question.questionText)}
+                </div>
+                ${options.map(([letter, value]) => `
+                    <label class="option">
+                        <input type="radio"
+                            name="question-${question.id}"
+                            value="${letter}">
+                        ${letter}. ${escapeHtml(value)}
+                    </label>
+                `).join("")}
+            `;
+
+            container.appendChild(card);
+        });
+    }
+
+    async function submitTest() {
+        if (submitting) return;
+
+        if (!confirm("Are you sure you want to submit your Quick Test?")) {
+            return;
+        }
+
+        const answers = {};
+
+        questions.forEach(question => {
+            const selected = document.querySelector(
+                `input[name="question-${question.id}"]:checked`
+            );
+
+            if (selected) {
+                answers[question.id] = selected.value;
+            }
+        });
+
+        submitting = true;
+        showMessage("Submitting your test...");
+
+        const submitButton = document.querySelector(
+            "#testArea button"
+        );
+        if (submitButton) submitButton.disabled = true;
+
+        try {
+            const response = await fetch(context + "/quick-test/submit", {
+                method: "POST",
+                credentials: "same-origin",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ answers })
+            });
+
+            const data = await response.json();
+
+            if (!response.ok || !data.success) {
+                throw new Error(data.message || "Submission failed.");
+            }
+
+            document.getElementById("testArea").classList.add("hidden");
+            document.getElementById("resultArea").classList.remove("hidden");
+
+            document.getElementById("result").innerHTML = `
+                <p><strong>Score:</strong> ${escapeHtml(data.score)} / ${escapeHtml(data.outOf)}</p>
+                <p><strong>Correct answers:</strong> ${escapeHtml(data.correctAnswers)}</p>
+                <p><strong>Incorrect or unanswered:</strong>
+                    ${escapeHtml(data.incorrectOrUnanswered)}</p>
+                <p>Your result has been saved.</p>
+            `;
+
+            showMessage("");
+        } catch (error) {
+            showMessage("Submission error: " + error.message);
+        } finally {
+            submitting = false;
+            if (submitButton) submitButton.disabled = false;
+        }
+    }
+
+    function backToDashboard() {
+        window.location.href = context + "/dashboard.html";
+    }
+
+    function showMessage(message) {
+        document.getElementById("message").textContent = message;
+    }
+</script>
+</body>
+</html>

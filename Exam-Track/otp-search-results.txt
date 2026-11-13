@@ -1,0 +1,114 @@
+C:\Users\Sai\OneDrive\Desktop\Exam-Track\src\main\java\com\examtrack\controller\RegisterServlet.java:30  // Account creation must happen only after OTP verification.
+C:\Users\Sai\OneDrive\Desktop\Exam-Track\src\main\java\com\examtrack\controller\SendEmailOtpServlet.java:21  @WebServlet("/send-email-otp")
+C:\Users\Sai\OneDrive\Desktop\Exam-Track\src\main\java\com\examtrack\controller\SendEmailOtpServlet.java:22  public class SendEmailOtpServlet extends HttpServlet {
+C:\Users\Sai\OneDrive\Desktop\Exam-Track\src\main\java\com\examtrack\controller\SendEmailOtpServlet.java:55  Long lastSent = (Long) session.getAttribute("emailOtpLastSent");
+C:\Users\Sai\OneDrive\Desktop\Exam-Track\src\main\java\com\examtrack\controller\SendEmailOtpServlet.java:57  (String) session.getAttribute("emailOtpEmail");
+C:\Users\Sai\OneDrive\Desktop\Exam-Track\src\main\java\com\examtrack\controller\SendEmailOtpServlet.java:59  (String) session.getAttribute("emailOtpMode");
+C:\Users\Sai\OneDrive\Desktop\Exam-Track\src\main\java\com\examtrack\controller\SendEmailOtpServlet.java:66  + "/verify-otp.html?flow=login&error=cooldown");
+C:\Users\Sai\OneDrive\Desktop\Exam-Track\src\main\java\com\examtrack\controller\SendEmailOtpServlet.java:70  String otp = String.valueOf(100000 + random.nextInt(900000));
+C:\Users\Sai\OneDrive\Desktop\Exam-Track\src\main\java\com\examtrack\controller\SendEmailOtpServlet.java:71  String otpHash = PasswordUtil.hash(otp);
+C:\Users\Sai\OneDrive\Desktop\Exam-Track\src\main\java\com\examtrack\controller\SendEmailOtpServlet.java:74  EmailUtil.sendVerificationCode(email, studentName, otp);
+C:\Users\Sai\OneDrive\Desktop\Exam-Track\src\main\java\com\examtrack\controller\SendEmailOtpServlet.java:76  session.setAttribute("emailOtpEmail", email);
+C:\Users\Sai\OneDrive\Desktop\Exam-Track\src\main\java\com\examtrack\controller\SendEmailOtpServlet.java:77  session.setAttribute("emailOtpMode", "login");
+C:\Users\Sai\OneDrive\Desktop\Exam-Track\src\main\java\com\examtrack\controller\SendEmailOtpServlet.java:78  session.setAttribute("emailOtpHash", otpHash);
+C:\Users\Sai\OneDrive\Desktop\Exam-Track\src\main\java\com\examtrack\controller\SendEmailOtpServlet.java:79  session.setAttribute("emailOtpExpires",
+C:\Users\Sai\OneDrive\Desktop\Exam-Track\src\main\java\com\examtrack\controller\SendEmailOtpServlet.java:81  session.setAttribute("emailOtpAttempts", 0);
+C:\Users\Sai\OneDrive\Desktop\Exam-Track\src\main\java\com\examtrack\controller\SendEmailOtpServlet.java:82  session.setAttribute("emailOtpLastSent",
+C:\Users\Sai\OneDrive\Desktop\Exam-Track\src\main\java\com\examtrack\controller\SendEmailOtpServlet.java:85  response.sendRedirect(context + "/verify-otp.html?flow=login");
+C:\Users\Sai\OneDrive\Desktop\Exam-Track\src\main\java\com\examtrack\controller\SendEmailOtpServlet.java:88  getServletContext().log("Could not prepare login OTP.", e);
+C:\Users\Sai\OneDrive\Desktop\Exam-Track\src\main\java\com\examtrack\controller\SendEmailOtpServlet.java:91  getServletContext().log("Could not send login OTP.", e);
+C:\Users\Sai\OneDrive\Desktop\Exam-Track\src\main\java\com\examtrack\controller\SendRegistrationOtpServlet.java:22  @WebServlet("/send-registration-otp")
+C:\Users\Sai\OneDrive\Desktop\Exam-Track\src\main\java\com\examtrack\controller\SendRegistrationOtpServlet.java:23  public class SendRegistrationOtpServlet extends HttpServlet {
+C:\Users\Sai\OneDrive\Desktop\Exam-Track\src\main\java\com\examtrack\controller\SendRegistrationOtpServlet.java:111  (Long) session.getAttribute("registrationOtpLastSent");
+C:\Users\Sai\OneDrive\Desktop\Exam-Track\src\main\java\com\examtrack\controller\SendRegistrationOtpServlet.java:113  (String) session.getAttribute("registrationOtpEmail");
+C:\Users\Sai\OneDrive\Desktop\Exam-Track\src\main\java\com\examtrack\controller\SendRegistrationOtpServlet.java:122  String otp = String.valueOf(100000 + random.nextInt(900000));
+C:\Users\Sai\OneDrive\Desktop\Exam-Track\src\main\java\com\examtrack\controller\SendRegistrationOtpServlet.java:123  String otpHash = PasswordUtil.hash(otp);
+C:\Users\Sai\OneDrive\Desktop\Exam-Track\src\main\java\com\examtrack\controller\SendRegistrationOtpServlet.java:125  EmailUtil.sendVerificationCode(email, otp, "registration");
+C:\Users\Sai\OneDrive\Desktop\Exam-Track\src\main\java\com\examtrack\controller\SendRegistrationOtpServlet.java:133  session.setAttribute("registrationOtpHash", otpHash);
+C:\Users\Sai\OneDrive\Desktop\Exam-Track\src\main\java\com\examtrack\controller\SendRegistrationOtpServlet.java:134  session.setAttribute("registrationOtpExpiresAt",
+C:\Users\Sai\OneDrive\Desktop\Exam-Track\src\main\java\com\examtrack\controller\SendRegistrationOtpServlet.java:136  session.setAttribute("registrationOtpAttempts", 0);
+C:\Users\Sai\OneDrive\Desktop\Exam-Track\src\main\java\com\examtrack\controller\SendRegistrationOtpServlet.java:137  session.setAttribute("registrationOtpEmail", email);
+C:\Users\Sai\OneDrive\Desktop\Exam-Track\src\main\java\com\examtrack\controller\SendRegistrationOtpServlet.java:138  session.setAttribute("registrationOtpLastSent",
+C:\Users\Sai\OneDrive\Desktop\Exam-Track\src\main\java\com\examtrack\controller\SendRegistrationOtpServlet.java:141  response.sendRedirect(context + "/verify-otp.html?flow=register");
+C:\Users\Sai\OneDrive\Desktop\Exam-Track\src\main\java\com\examtrack\controller\SendRegistrationOtpServlet.java:147  getServletContext().log("Registration OTP email failed.", e);
+C:\Users\Sai\OneDrive\Desktop\Exam-Track\src\main\java\com\examtrack\controller\VerifyEmailOtpServlet.java:18  @WebServlet("/verify-email-otp")
+C:\Users\Sai\OneDrive\Desktop\Exam-Track\src\main\java\com\examtrack\controller\VerifyEmailOtpServlet.java:19  public class VerifyEmailOtpServlet extends HttpServlet {
+C:\Users\Sai\OneDrive\Desktop\Exam-Track\src\main\java\com\examtrack\controller\VerifyEmailOtpServlet.java:23  private static final String EMAIL_KEY = "emailOtpEmail";
+C:\Users\Sai\OneDrive\Desktop\Exam-Track\src\main\java\com\examtrack\controller\VerifyEmailOtpServlet.java:24  private static final String MODE_KEY = "emailOtpMode";
+C:\Users\Sai\OneDrive\Desktop\Exam-Track\src\main\java\com\examtrack\controller\VerifyEmailOtpServlet.java:25  private static final String HASH_KEY = "emailOtpHash";
+C:\Users\Sai\OneDrive\Desktop\Exam-Track\src\main\java\com\examtrack\controller\VerifyEmailOtpServlet.java:26  private static final String EXPIRY_KEY = "emailOtpExpires";
+C:\Users\Sai\OneDrive\Desktop\Exam-Track\src\main\java\com\examtrack\controller\VerifyEmailOtpServlet.java:27  private static final String ATTEMPTS_KEY = "emailOtpAttempts";
+C:\Users\Sai\OneDrive\Desktop\Exam-Track\src\main\java\com\examtrack\controller\VerifyEmailOtpServlet.java:37  request.getContextPath() + "/verify-otp.html");
+C:\Users\Sai\OneDrive\Desktop\Exam-Track\src\main\java\com\examtrack\controller\VerifyEmailOtpServlet.java:62  // This endpoint is for existing-account OTP login only.
+C:\Users\Sai\OneDrive\Desktop\Exam-Track\src\main\java\com\examtrack\controller\VerifyEmailOtpServlet.java:63  // Registration must use the complete registration OTP flow.
+C:\Users\Sai\OneDrive\Desktop\Exam-Track\src\main\java\com\examtrack\controller\VerifyEmailOtpServlet.java:65  clearOtpSession(session);
+C:\Users\Sai\OneDrive\Desktop\Exam-Track\src\main\java\com\examtrack\controller\VerifyEmailOtpServlet.java:73  clearOtpSession(session);
+C:\Users\Sai\OneDrive\Desktop\Exam-Track\src\main\java\com\examtrack\controller\VerifyEmailOtpServlet.java:84  clearOtpSession(session);
+C:\Users\Sai\OneDrive\Desktop\Exam-Track\src\main\java\com\examtrack\controller\VerifyEmailOtpServlet.java:90  clearOtpSession(session);
+C:\Users\Sai\OneDrive\Desktop\Exam-Track\src\main\java\com\examtrack\controller\VerifyEmailOtpServlet.java:95  String otp = request.getParameter("otp");
+C:\Users\Sai\OneDrive\Desktop\Exam-Track\src\main\java\com\examtrack\controller\VerifyEmailOtpServlet.java:97  if (otp == null || !otp.trim().matches("\\d{6}")) {
+C:\Users\Sai\OneDrive\Desktop\Exam-Track\src\main\java\com\examtrack\controller\VerifyEmailOtpServlet.java:101  clearOtpSession(session);
+C:\Users\Sai\OneDrive\Desktop\Exam-Track\src\main\java\com\examtrack\controller\VerifyEmailOtpServlet.java:104  redirect(request, response, "/verify-otp.html", "invalid");
+C:\Users\Sai\OneDrive\Desktop\Exam-Track\src\main\java\com\examtrack\controller\VerifyEmailOtpServlet.java:110  if (!PasswordUtil.verify(otp.trim(), storedHash)) {
+C:\Users\Sai\OneDrive\Desktop\Exam-Track\src\main\java\com\examtrack\controller\VerifyEmailOtpServlet.java:114  clearOtpSession(session);
+C:\Users\Sai\OneDrive\Desktop\Exam-Track\src\main\java\com\examtrack\controller\VerifyEmailOtpServlet.java:117  redirect(request, response, "/verify-otp.html", "invalid");
+C:\Users\Sai\OneDrive\Desktop\Exam-Track\src\main\java\com\examtrack\controller\VerifyEmailOtpServlet.java:125  clearOtpSession(session);
+C:\Users\Sai\OneDrive\Desktop\Exam-Track\src\main\java\com\examtrack\controller\VerifyEmailOtpServlet.java:130  // OTP login must not authenticate incomplete accounts.
+C:\Users\Sai\OneDrive\Desktop\Exam-Track\src\main\java\com\examtrack\controller\VerifyEmailOtpServlet.java:133  clearOtpSession(session);
+C:\Users\Sai\OneDrive\Desktop\Exam-Track\src\main\java\com\examtrack\controller\VerifyEmailOtpServlet.java:147  clearOtpSession(session);
+C:\Users\Sai\OneDrive\Desktop\Exam-Track\src\main\java\com\examtrack\controller\VerifyEmailOtpServlet.java:154  "Could not verify the email OTP.", e);
+C:\Users\Sai\OneDrive\Desktop\Exam-Track\src\main\java\com\examtrack\controller\VerifyEmailOtpServlet.java:157  "Database error while verifying the email OTP.", e);
+C:\Users\Sai\OneDrive\Desktop\Exam-Track\src\main\java\com\examtrack\controller\VerifyEmailOtpServlet.java:175  private void clearOtpSession(HttpSession session) {
+C:\Users\Sai\OneDrive\Desktop\Exam-Track\src\main\java\com\examtrack\controller\VerifyRegistrationOtpServlet.java:18  @WebServlet("/verify-registration-otp")
+C:\Users\Sai\OneDrive\Desktop\Exam-Track\src\main\java\com\examtrack\controller\VerifyRegistrationOtpServlet.java:19  public class VerifyRegistrationOtpServlet extends HttpServlet {
+C:\Users\Sai\OneDrive\Desktop\Exam-Track\src\main\java\com\examtrack\controller\VerifyRegistrationOtpServlet.java:27  + "/verify-otp.html?flow=register");
+C:\Users\Sai\OneDrive\Desktop\Exam-Track\src\main\java\com\examtrack\controller\VerifyRegistrationOtpServlet.java:48  String savedOtpHash =
+C:\Users\Sai\OneDrive\Desktop\Exam-Track\src\main\java\com\examtrack\controller\VerifyRegistrationOtpServlet.java:49  (String) session.getAttribute("registrationOtpHash");
+C:\Users\Sai\OneDrive\Desktop\Exam-Track\src\main\java\com\examtrack\controller\VerifyRegistrationOtpServlet.java:50  String enteredOtp = request.getParameter("otp");
+C:\Users\Sai\OneDrive\Desktop\Exam-Track\src\main\java\com\examtrack\controller\VerifyRegistrationOtpServlet.java:53  (Long) session.getAttribute("registrationOtpExpiresAt");
+C:\Users\Sai\OneDrive\Desktop\Exam-Track\src\main\java\com\examtrack\controller\VerifyRegistrationOtpServlet.java:55  (Integer) session.getAttribute("registrationOtpAttempts");
+C:\Users\Sai\OneDrive\Desktop\Exam-Track\src\main\java\com\examtrack\controller\VerifyRegistrationOtpServlet.java:60  || savedOtpHash == null || expiresAt == null) {
+C:\Users\Sai\OneDrive\Desktop\Exam-Track\src\main\java\com\examtrack\controller\VerifyRegistrationOtpServlet.java:79  if (enteredOtp == null || !enteredOtp.matches("[0-9]{6}")) {
+C:\Users\Sai\OneDrive\Desktop\Exam-Track\src\main\java\com\examtrack\controller\VerifyRegistrationOtpServlet.java:80  session.setAttribute("registrationOtpAttempts", attempts + 1);
+C:\Users\Sai\OneDrive\Desktop\Exam-Track\src\main\java\com\examtrack\controller\VerifyRegistrationOtpServlet.java:82  + "/verify-otp.html?flow=register&error=invalid");
+C:\Users\Sai\OneDrive\Desktop\Exam-Track\src\main\java\com\examtrack\controller\VerifyRegistrationOtpServlet.java:87  if (!PasswordUtil.verify(enteredOtp, savedOtpHash)) {
+C:\Users\Sai\OneDrive\Desktop\Exam-Track\src\main\java\com\examtrack\controller\VerifyRegistrationOtpServlet.java:89  session.setAttribute("registrationOtpAttempts", newAttempts);
+C:\Users\Sai\OneDrive\Desktop\Exam-Track\src\main\java\com\examtrack\controller\VerifyRegistrationOtpServlet.java:97  + "/verify-otp.html?flow=register&error=invalid");
+C:\Users\Sai\OneDrive\Desktop\Exam-Track\src\main\java\com\examtrack\controller\VerifyRegistrationOtpServlet.java:120  getServletContext().log("Registration OTP verification failed.", e);
+C:\Users\Sai\OneDrive\Desktop\Exam-Track\src\main\java\com\examtrack\controller\VerifyRegistrationOtpServlet.java:131  session.removeAttribute("registrationOtpHash");
+C:\Users\Sai\OneDrive\Desktop\Exam-Track\src\main\java\com\examtrack\controller\VerifyRegistrationOtpServlet.java:132  session.removeAttribute("registrationOtpExpiresAt");
+C:\Users\Sai\OneDrive\Desktop\Exam-Track\src\main\java\com\examtrack\controller\VerifyRegistrationOtpServlet.java:133  session.removeAttribute("registrationOtpAttempts");
+C:\Users\Sai\OneDrive\Desktop\Exam-Track\src\main\java\com\examtrack\controller\VerifyRegistrationOtpServlet.java:134  session.removeAttribute("registrationOtpEmail");
+C:\Users\Sai\OneDrive\Desktop\Exam-Track\src\main\java\com\examtrack\controller\VerifyRegistrationOtpServlet.java:135  session.removeAttribute("registrationOtpLastSent");
+C:\Users\Sai\OneDrive\Desktop\Exam-Track\src\main\java\com\examtrack\dao\StudentDAO.java:172  // A missing name does not prevent the account from requesting a login OTP.
+C:\Users\Sai\OneDrive\Desktop\Exam-Track\src\main\java\com\examtrack\util\EmailUtil.java:17  public static void sendVerificationCode(
+C:\Users\Sai\OneDrive\Desktop\Exam-Track\src\main\java\com\examtrack\util\EmailUtil.java:20  String otp) throws MessagingException {
+C:\Users\Sai\OneDrive\Desktop\Exam-Track\src\main\java\com\examtrack\util\EmailUtil.java:59  message.setSubject("ExamTrack - Email Verification Code");
+C:\Users\Sai\OneDrive\Desktop\Exam-Track\src\main\java\com\examtrack\util\EmailUtil.java:63  + "Your ExamTrack verification code is: " + otp + "\n\n"
+C:\Users\Sai\OneDrive\Desktop\Exam-Track\src\main\webapp\index.html:386  <div class="feature">✓ Email OTP authentication</div>
+C:\Users\Sai\OneDrive\Desktop\Exam-Track\src\main\webapp\login.html:166  action="send-email-otp"
+C:\Users\Sai\OneDrive\Desktop\Exam-Track\src\main\webapp\login.html:187  Send Login OTP
+C:\Users\Sai\OneDrive\Desktop\Exam-Track\src\main\webapp\login.html:220  "The OTP email could not be sent. Check your Gmail configuration and the Tomcat logs.",
+C:\Users\Sai\OneDrive\Desktop\Exam-Track\src\main\webapp\login.html:223  "Your verification code or session has expired. Please request a new OTP.",
+C:\Users\Sai\OneDrive\Desktop\Exam-Track\src\main\webapp\login.html:226  "Too many incorrect OTP attempts. Please request a new code.",
+C:\Users\Sai\OneDrive\Desktop\Exam-Track\src\main\webapp\login.html:232  "Please wait before requesting another OTP."
+C:\Users\Sai\OneDrive\Desktop\Exam-Track\src\main\webapp\login.html:267  submitButton.textContent = "Requesting OTP...";
+C:\Users\Sai\OneDrive\Desktop\Exam-Track\src\main\webapp\login.html:269  // The browser submits the form to send-email-otp.
+C:\Users\Sai\OneDrive\Desktop\Exam-Track\src\main\webapp\login.html:277  submitButton.textContent = "Send Login OTP";
+C:\Users\Sai\OneDrive\Desktop\Exam-Track\src\main\webapp\register.html:119  <form id="registrationForm" action="send-registration-otp" method="post">
+C:\Users\Sai\OneDrive\Desktop\Exam-Track\src\main\webapp\register.html:181  Send verification OTP
+C:\Users\Sai\OneDrive\Desktop\Exam-Track\src\main\webapp\register.html:196  mail: "We couldn't send the OTP. Check your email settings and try again.",
+C:\Users\Sai\OneDrive\Desktop\Exam-Track\src\main\webapp\register.html:198  attempts: "Too many incorrect attempts. Please request a new OTP.",
+C:\Users\Sai\OneDrive\Desktop\Exam-Track\src\main\webapp\register.html:202  otp: "We couldn't prepare your OTP. Please try again.",
+C:\Users\Sai\OneDrive\Desktop\Exam-Track\src\main\webapp\register.html:248  submitButton.textContent = "Sending OTP...";
+C:\Users\Sai\OneDrive\Desktop\Exam-Track\src\main\webapp\verify-otp.html:7  <title>Verify OTP | ExamTrack</title>
+C:\Users\Sai\OneDrive\Desktop\Exam-Track\src\main\webapp\verify-otp.html:30  <form id="otpForm" method="post">
+C:\Users\Sai\OneDrive\Desktop\Exam-Track\src\main\webapp\verify-otp.html:31  <label for="otp">Verification code</label>
+C:\Users\Sai\OneDrive\Desktop\Exam-Track\src\main\webapp\verify-otp.html:32  <input id="otp" name="otp" type="text"
+C:\Users\Sai\OneDrive\Desktop\Exam-Track\src\main\webapp\verify-otp.html:49  expired: "Your verification code expired. Request a new OTP.",
+C:\Users\Sai\OneDrive\Desktop\Exam-Track\src\main\webapp\verify-otp.html:50  attempts: "Too many incorrect attempts. Request a new OTP.",
+C:\Users\Sai\OneDrive\Desktop\Exam-Track\src\main\webapp\verify-otp.html:51  cooldown: "Please wait before requesting another OTP.",
+C:\Users\Sai\OneDrive\Desktop\Exam-Track\src\main\webapp\verify-otp.html:61  document.getElementById("otpForm").action = "verify-registration-otp";
+C:\Users\Sai\OneDrive\Desktop\Exam-Track\src\main\webapp\verify-otp.html:63  document.getElementById("otpForm").action = "verify-email-otp";
+C:\Users\Sai\OneDrive\Desktop\Exam-Track\src\main\webapp\verify-otp.html:67  document.querySelector("#otpForm button").disabled = true;
+C:\Users\Sai\OneDrive\Desktop\Exam-Track\src\main\webapp\verify-otp.html:70  document.getElementById("otpForm").addEventListener("submit", function(event) {
